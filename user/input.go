@@ -8,6 +8,6 @@ type RegisterUserInput struct {
 }
 
 type LoginInput struct {
-	Email    string
-	Password string
+	Email    string `json:"email" form:"email" binding:"required,email"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
