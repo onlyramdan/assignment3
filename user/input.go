@@ -1,10 +1,10 @@
 package user
 
 type RegisterUserInput struct {
-	Name       string
-	Occupation string
-	Email      string
-	Password   string
+	Name       string `json:"name"`
+	Occupation string `json:"occupation"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
 }
 
 type LoginInput struct {
