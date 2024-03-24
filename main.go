@@ -28,5 +28,6 @@ func main() {
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/cek_email", userHandler.CekEmail)
+	api.POST("/upload_avatar", userHandler.UploadAvatar)
 	router.Run()
 }

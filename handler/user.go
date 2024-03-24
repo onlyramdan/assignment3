@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"tugas/helper"
@@ -97,4 +98,38 @@ func (h *userHandler) CekEmail(c *gin.Context) {
 	}
 	response := helper.APIresponse(msg, http.StatusOK, "Success", data)
 	c.JSON(http.StatusOK, response)
+}
+func (h *userHandler) UploadAvatar(c *gin.Context) {
+	file, err := c.FormFile("avatar")
+
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIresponse("Upload Failed", http.StatusBadRequest, "Failed", data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	ID_User := 4
+	path := fmt.Sprintf("images/profile/%d-%s", ID_User, file.Filename)
+
+	err = c.SaveUploadedFile(file, path)
+
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIresponse("Uploaded Failed", http.StatusBadRequest, "Failed", data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	_, err = h.userService.SaveAvatar(ID_User, path)
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIresponse("Uploaded Failed", http.StatusBadRequest, "Failed", data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	data := gin.H{"is_uploaded": true}
+	response := helper.APIresponse("Success Uploaded Avatar", http.StatusOK, "Success", data)
+	c.JSON(http.StatusOK, response)
+	return
 }
